@@ -6,4 +6,4 @@ Deployment tips for nodejs
 https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_nodejs_express.html
 =======
 Dany is testing something.
->>>>>>> b0a662b77309ed47487dc75a1241529c1bec9b59
+
