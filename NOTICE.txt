@@ -1,10 +1,6 @@
 Notice Description 
-<<<<<<< HEAD
-=======
-====================
 adding something in this file
 $$##&& will this work
->>>>>>> 833e5387053db1f1ff0464d3c16835491bc43db1
 
 Deployment tips for nodejs
 https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_nodejs_express.html
