@@ -1,0 +1,17 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.7.15",
+    "body-parser": "^1.15.2",
+    "express": "4.12.3",
+    "jade": "^1.11.0",
+    "method-override": "^2.3.7",
+    "morgan": "^1.7.0",
+    "serve-favicon": "2.3.2"
+  }
+}

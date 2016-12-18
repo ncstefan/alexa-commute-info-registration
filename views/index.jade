@@ -1,0 +1,88 @@
+extends layout
+
+block content
+  div(class="container")
+    div(class="header")
+      ul(class="nav nav-pills pull-right")
+        li(class="active")
+          a(href="#") Home
+        li
+          a(href="#") About
+        li
+          a(href="#") Blog
+        li
+          a(href="#") Press
+      h3(class="text-muted") Commute Info for Alexa
+    div(id="signupSuccess", class="alert alert-success", style="display:none")
+      p(id="signupSuccessText") Thanks for registering you Commute Info App! You can now get traffic duration and directions for the registered routes.
+    div(id="signupDuplicate", class="alert alert-success", style="display:none")
+      p(id="signupDuplicateText") You're already a registered user. The new information will overwrite your original configuration.
+    div(id="signupError", class="alert alert-info", style="display:none")
+      p(id="signupErrorText") Well this is embarrassing. It looks like we're having trouble registering you.
+    div(class="jumbotron")
+      h1 Hi there!
+      p(class="lead") We're really glad to help make your commute easier. By registering your routes here, you will let your Alexa know about the most frequent destinations of the people in your household. 
+      p(class="lead") Hit the "Register" button below and never worry about how long your commute will take.
+      p(class="btn btn-lg btn-success", data-toggle="modal", href="#signupModal") Register today!
+    
+    div(class="footer")
+      p &copy; Commute Info for Alexa
+      
+    // Modal
+    div(class="modal fade", id="signupModal", tabindex="-1", role="dialog", aria-labelledby="signupModal", aria-hidden="true")
+      div(class="modal-dialog")
+        div(class="modal-content")
+          div(class="modal-header")
+            button(type="button", class="close", data-dismiss="modal", aria-hidden="true") &times;
+            h4(class="modal-title") Provide a few details of your most frequent routes:
+          div(class="modal-body")
+            form(id="signupForm", role="form")
+              input(type="hidden", id="theme", name="theme", value="flatly")
+              //Alexa ID
+              div(class="form-group")
+                label(for="alxid") Alexa's User ID (Alexa, ask Commute Info for the userid)
+                input(type="text", class="form-control", id="alxid", name="alxid", placeholder="Your Alexa's ID")
+              //Alexa's location
+              div(class="form-group")
+                label(for="alxaddress") Alexa's Location (a.k.a. your address)
+                input(type="text", class="form-control", id="alxaddress", name="alxaddress", placeholder="Your Alexa's Location")
+              //Name & address (1)
+              div(class="form-group")
+                label(for="name1") Your Name
+                input(type="text", class="form-control", id="name1", name="name1", placeholder="Your name")
+              div(class="form-group")
+                label(for="address1") Your frequent destination
+                input(type="text", class="form-control", id="address1", name="address1", placeholder="Your address")
+
+              div(class="form-group")
+                label(for="previewAccess") Interested in Preview Access?
+                select(class="form-control", name="previewAccess")
+                  option Yes
+                  option No
+
+          div(class="modal-footer")
+            button(id="signup", type="button", class="btn btn-primary") Register!
+  script(src="../static/jquery/jquery.js")
+  script(src="../static/bootstrap/js/bootstrap.min.js")
+  script.
+    $(document).ready(function() {
+      $("#signup").click(function() {
+        $.post( "/signup", $("#signupForm").serialize(),
+                function(data) {
+                  $("#signupSuccess").show();
+                }
+              )
+              .error(function(xhr) {
+                switch(xhr.status) {
+                  case 409:
+                    $("#signupDuplicate").show();
+                    break;
+                  default:
+                    $("#signupError").show();
+                }
+              })
+              .always(function() {
+                $("#signupModal").modal('hide');
+              });
+      })
+    })
