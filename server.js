@@ -16,8 +16,8 @@ var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-//var routes = require('./rts_index');
-var routes = require('./rts');
+var routes = require('./rts_index');
+//var routes = require('./rts');
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
@@ -59,7 +59,7 @@ app.post('/signup', function(req, res) {
 
 //app.use(express.static(path.join(__dirname, 'public'))); //??not needed -> configured @ aws:elasticbeanstalk:container:nodejs:staticfiles
 
-app.locals.theme = process.env.THEME; //Make the THEME environment variable available to the app. 
+//app.locals.theme = process.env.THEME; //Make the THEME environment variable available to the app. 
 
 //Add signup form data to database.
 var signup = function (nameSubmitted, emailSubmitted, previewPreference) {
