@@ -47,11 +47,13 @@ app.get('/', routes.index);
 
 //POST signup form.
 app.post('/signup', function(req, res) {
-  var nameField = req.body.name,
-      emailField = req.body.email,
-      previewBool = req.body.previewAccess;
+  var alxIDField = req.body.alxID,
+      alxAddressField = req.body.alxAddress,
+      name1Field = req.body.name1,
+      address1Field = req.body.address1;
+
   res.sendStatus(200);
-  signup(nameField, emailField, previewBool);
+  signup(alxID, alxAddressField, name1Field, address1Field);
 });
 
 //moved after GET & POST as per 3.4 -> 4.x migration instructions (router methods are added in order of which they appear)
@@ -59,13 +61,14 @@ app.use(express.static(path.join(__dirname, 'public'))); //??not needed -> confi
 app.locals.theme = process.env.THEME; //Make the THEME environment variable available to the app. 
 
 //Add signup form data to database.
-var signup = function (nameSubmitted, emailSubmitted, previewPreference) {
+var signup = function (alxID, alxAddress, name1, address1) {
   var formData = {
     TableName: config.STARTUP_SIGNUP_TABLE,
     Item: {
-      email: {'S': emailSubmitted}, 
-      name: {'S': nameSubmitted},
-      preview: {'S': previewPreference}
+      userID: {'S': alxID}, 
+      alexaLocation: {'S': alxAddress},
+      name1: {'S': name1},
+      address1: {'S':address1}
     }
   };
   db.putItem(formData, function(err, data) {
