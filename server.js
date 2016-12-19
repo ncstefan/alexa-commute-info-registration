@@ -53,7 +53,7 @@ app.post('/signup', function(req, res) {
       address1Field = req.body.address1;
 
   res.sendStatus(200);
-  signup(alxID, alxAddressField, name1Field, address1Field);
+  signup(alxIDField, alxAddressField, name1Field, address1Field);
 });
 
 //moved after GET & POST as per 3.4 -> 4.x migration instructions (router methods are added in order of which they appear)
