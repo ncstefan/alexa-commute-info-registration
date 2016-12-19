@@ -16,8 +16,7 @@ var favicon = require('serve-favicon');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var routes = require('./rts_index');
-//var routes = require('./rts');
+var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 var fs = require('fs');
@@ -27,7 +26,7 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
-//app.use(favicon(path.join(__dirname, 'public','images','favicon.ico'))); 
+app.use(favicon(path.join(__dirname, 'public','images','favicon.ico'))); 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true})); // get data from a POST method
 app.use(bodyParser.json());
@@ -39,9 +38,9 @@ var config = fs.readFileSync('./app_config.json', 'utf8');
 config = JSON.parse(config);
 
 //Create DynamoDB client and pass in region.
-var db = new AWS.DynamoDB({region: config.AWS_REGION});
+//var db = new AWS.DynamoDB({region: config.AWS_REGION});
 //Create SNS client and pass in region.
-var sns = new AWS.SNS({ region: config.AWS_REGION});
+//var sns = new AWS.SNS({ region: config.AWS_REGION});
 
 //GET home page.
 app.get('/', routes.index);
@@ -56,10 +55,8 @@ app.post('/signup', function(req, res) {
 });
 
 //moved after GET & POST as per 3.4 -> 4.x migration instructions (router methods are added in order of which they appear)
-
-//app.use(express.static(path.join(__dirname, 'public'))); //??not needed -> configured @ aws:elasticbeanstalk:container:nodejs:staticfiles
-
-//app.locals.theme = process.env.THEME; //Make the THEME environment variable available to the app. 
+app.use(express.static(path.join(__dirname, 'public'))); //??not needed -> configured @ aws:elasticbeanstalk:container:nodejs:staticfiles
+app.locals.theme = process.env.THEME; //Make the THEME environment variable available to the app. 
 
 //Add signup form data to database.
 var signup = function (nameSubmitted, emailSubmitted, previewPreference) {
