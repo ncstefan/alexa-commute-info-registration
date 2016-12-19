@@ -38,9 +38,9 @@ var config = fs.readFileSync('./app_config.json', 'utf8');
 config = JSON.parse(config);
 
 //Create DynamoDB client and pass in region.
-//var db = new AWS.DynamoDB({region: config.AWS_REGION});
+var db = new AWS.DynamoDB({region: config.AWS_REGION});
 //Create SNS client and pass in region.
-//var sns = new AWS.SNS({ region: config.AWS_REGION});
+var sns = new AWS.SNS({ region: config.AWS_REGION});
 
 //GET home page.
 app.get('/', routes.index);
