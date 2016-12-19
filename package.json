@@ -12,7 +12,6 @@
     "jade": "^1.11.0",
     "method-override": "^2.3.7",
     "morgan": "^1.7.0",
-    "serve-favicon": "2.3.2",
-    "rts": "*"
+    "serve-favicon": "2.3.2"
   }
 }
