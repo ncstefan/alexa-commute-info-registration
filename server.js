@@ -47,8 +47,8 @@ app.get('/', routes.index);
 
 //POST signup form.
 app.post('/signup', function(req, res) {
-  var alxIDField = req.body.alxID,
-      alxAddressField = req.body.alxAddress,
+  var alxIDField = req.body.alxid,
+      alxAddressField = req.body.alxaddress,
       name1Field = req.body.name1,
       address1Field = req.body.address1;
 
@@ -65,12 +65,13 @@ var signup = function (alxID, alxAddress, name1, address1) {
   var formData = {
     TableName: config.STARTUP_SIGNUP_TABLE,
     Item: {
-      userID: {'S': alxID}, 
+      alxID: {'S': alxID}, 
       alexaLocation: {'S': alxAddress},
       name1: {'S': name1},
       address1: {'S':address1}
     }
   };
+  console.log("db update:\n" + JSON.stringify(formData));
   db.putItem(formData, function(err, data) {
     if (err) {
       console.log('Error adding item to database: ', err);
