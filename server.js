@@ -48,27 +48,58 @@ app.get('/', routes.index);
 //POST signup form.
 app.post('/signup', function(req, res) {
   var alxIDField = req.body.alxid,
-      alxAddressField = req.body.alxaddress,
-      name1Field = req.body.name1,
-      address1Field = req.body.address1;
+      alxAddressField = req.body.alxaddress;
+    var namemap= [];
+
+  if (req.body.name1 && req.body.address1){
+    namemap.push({
+      'M' : {
+        Name: {'S': req.body.name1},
+        Address: {'S': req.body.address1}
+      }
+    });
+  } 
+  if (req.body.name2 && req.body.address2){
+    namemap.push({
+      'M' : {
+        Name: {'S': req.body.name2},
+        Address: {'S': req.body.address2}
+      }
+    });
+  } 
+  if (req.body.name3 && req.body.address3){
+    namemap.push({
+      'M' : {
+        Name: {'S': req.body.name3},
+        Address: {'S': req.body.address3}
+      }
+    });
+  } 
+  if (req.body.name4 && req.body.address4){
+    namemap.push({
+      'M' : {
+        Name: {'S': req.body.name4},
+        Address: {'S': req.body.address4}
+      }
+    });
+  } 
 
   res.sendStatus(200);
-  signup(alxIDField, alxAddressField, name1Field, address1Field);
+  signup(alxIDField, alxAddressField, namemap);
 });
 
 //moved after GET & POST as per 3.4 -> 4.x migration instructions (router methods are added in order of which they appear)
 app.use(express.static(path.join(__dirname, 'public'))); //??not needed -> configured @ aws:elasticbeanstalk:container:nodejs:staticfiles
 app.locals.theme = process.env.THEME; //Make the THEME environment variable available to the app. 
 
-//Add signup form data to database.
-var signup = function (alxID, alxAddress, name1, address1) {
+//Add signup form data to database..
+var signup = function (alxID, alxAddress, namemap) {
   var formData = {
     TableName: config.STARTUP_SIGNUP_TABLE,
     Item: {
       alxID: {'S': alxID}, 
       alexaLocation: {'S': alxAddress},
-      name1: {'S': name1},
-      address1: {'S':address1}
+      names: {'L': namemap}
     }
   };
   console.log("db update:\n" + JSON.stringify(formData));
@@ -78,7 +109,7 @@ var signup = function (alxID, alxAddress, name1, address1) {
     } else {
       console.log('Form data added to database.');
       var snsMessage = 'New signup: %EMAIL%'; //Send SNS notification containing email from form.
-      snsMessage = snsMessage.replace('%EMAIL%', formData.Item.email['S']);
+      snsMessage = snsMessage.replace('%EMAIL%', formData.Item.alxID);
       sns.publish({ TopicArn: config.NEW_SIGNUP_TOPIC, Message: snsMessage }, function(err, data) {
         if (err) {
           console.log('Error publishing SNS message: ' + err);
