@@ -45,6 +45,9 @@ var sns = new AWS.SNS({ region: config.AWS_REGION});
 //GET home page.
 app.get('/', routes.index);
 
+//GET privacy policy page
+app.get('/privacy', routes.privacy);
+
 //POST signup form.
 app.post('/signup', function(req, res) {
   var alxIDField = req.body.alxid,
